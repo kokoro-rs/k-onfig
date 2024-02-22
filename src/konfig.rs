@@ -4,6 +4,7 @@ use std::collections::HashSet;
 
 use crate::KType;
 pub use k_onfig_derive::Konfig;
+
 pub trait Konfig {
     fn konfig() -> KType;
 }

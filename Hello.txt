@@ -1,0 +1,658 @@
+#![feature(prelude_import)]
+#[prelude_import]
+use std::prelude::rust_2021::*;
+#[macro_use]
+extern crate std;
+pub mod konfig {
+    use std::collections::BTreeMap;
+    use std::collections::HashMap;
+    use std::collections::HashSet;
+    use crate::KType;
+    pub use k_onfig_derive::Konfig;
+    pub trait Konfig {
+        fn konfig() -> KType;
+    }
+    impl Konfig for i8 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for i16 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for i32 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for i64 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for i128 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for u8 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for u16 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for u32 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for u64 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for u128 {
+        fn konfig() -> crate::KType {
+            KType::Number
+        }
+    }
+    impl Konfig for String {
+        fn konfig() -> crate::KType {
+            KType::String
+        }
+    }
+    impl Konfig for str {
+        fn konfig() -> crate::KType {
+            KType::String
+        }
+    }
+    impl<T: Konfig> Konfig for Vec<T> {
+        fn konfig() -> KType {
+            KType::List(Box::new(T::konfig()))
+        }
+    }
+    impl<T: Konfig> Konfig for HashSet<T> {
+        fn konfig() -> KType {
+            KType::List(Box::new(T::konfig()))
+        }
+    }
+    impl<V: Konfig, K> Konfig for HashMap<K, V> {
+        fn konfig() -> KType {
+            KType::Map(Box::new(V::konfig()))
+        }
+    }
+    impl<V: Konfig, K> Konfig for BTreeMap<K, V> {
+        fn konfig() -> KType {
+            KType::Map(Box::new(V::konfig()))
+        }
+    }
+    impl Konfig for bool {
+        fn konfig() -> KType {
+            KType::Bool
+        }
+    }
+}
+pub use konfig::*;
+use serde::{Deserialize, Serialize};
+use std::collections::{BTreeMap, HashMap};
+pub enum KType {
+    Bool,
+    Map(Box<KType>),
+    Object(BTreeMap<&'static str, KType>),
+    Number,
+    String,
+    List(Box<KType>),
+    None,
+}
+#[automatically_derived]
+impl ::core::clone::Clone for KType {
+    #[inline]
+    fn clone(&self) -> KType {
+        match self {
+            KType::Bool => KType::Bool,
+            KType::Map(__self_0) => KType::Map(::core::clone::Clone::clone(__self_0)),
+            KType::Object(__self_0) => {
+                KType::Object(::core::clone::Clone::clone(__self_0))
+            }
+            KType::Number => KType::Number,
+            KType::String => KType::String,
+            KType::List(__self_0) => KType::List(::core::clone::Clone::clone(__self_0)),
+            KType::None => KType::None,
+        }
+    }
+}
+#[automatically_derived]
+impl ::core::fmt::Debug for KType {
+    #[inline]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        match self {
+            KType::Bool => ::core::fmt::Formatter::write_str(f, "Bool"),
+            KType::Map(__self_0) => {
+                ::core::fmt::Formatter::debug_tuple_field1_finish(f, "Map", &__self_0)
+            }
+            KType::Object(__self_0) => {
+                ::core::fmt::Formatter::debug_tuple_field1_finish(f, "Object", &__self_0)
+            }
+            KType::Number => ::core::fmt::Formatter::write_str(f, "Number"),
+            KType::String => ::core::fmt::Formatter::write_str(f, "String"),
+            KType::List(__self_0) => {
+                ::core::fmt::Formatter::debug_tuple_field1_finish(f, "List", &__self_0)
+            }
+            KType::None => ::core::fmt::Formatter::write_str(f, "None"),
+        }
+    }
+}
+#[automatically_derived]
+impl ::core::marker::StructuralEq for KType {}
+#[automatically_derived]
+impl ::core::cmp::Eq for KType {
+    #[inline]
+    #[doc(hidden)]
+    #[coverage(off)]
+    fn assert_receiver_is_total_eq(&self) -> () {
+        let _: ::core::cmp::AssertParamIsEq<Box<KType>>;
+        let _: ::core::cmp::AssertParamIsEq<BTreeMap<&'static str, KType>>;
+        let _: ::core::cmp::AssertParamIsEq<Box<KType>>;
+    }
+}
+#[automatically_derived]
+impl ::core::hash::Hash for KType {
+    #[inline]
+    fn hash<__H: ::core::hash::Hasher>(&self, state: &mut __H) -> () {
+        let __self_tag = ::core::intrinsics::discriminant_value(self);
+        ::core::hash::Hash::hash(&__self_tag, state);
+        match self {
+            KType::Map(__self_0) => ::core::hash::Hash::hash(__self_0, state),
+            KType::Object(__self_0) => ::core::hash::Hash::hash(__self_0, state),
+            KType::List(__self_0) => ::core::hash::Hash::hash(__self_0, state),
+            _ => {}
+        }
+    }
+}
+#[automatically_derived]
+impl ::core::marker::StructuralPartialEq for KType {}
+#[automatically_derived]
+impl ::core::cmp::PartialEq for KType {
+    #[inline]
+    fn eq(&self, other: &KType) -> bool {
+        let __self_tag = ::core::intrinsics::discriminant_value(self);
+        let __arg1_tag = ::core::intrinsics::discriminant_value(other);
+        __self_tag == __arg1_tag
+            && match (self, other) {
+                (KType::Map(__self_0), KType::Map(__arg1_0)) => *__self_0 == *__arg1_0,
+                (KType::Object(__self_0), KType::Object(__arg1_0)) => {
+                    *__self_0 == *__arg1_0
+                }
+                (KType::List(__self_0), KType::List(__arg1_0)) => *__self_0 == *__arg1_0,
+                _ => true,
+            }
+    }
+}
+#[doc(hidden)]
+#[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+const _: () = {
+    #[allow(unused_extern_crates, clippy::useless_attribute)]
+    extern crate serde as _serde;
+    #[automatically_derived]
+    impl _serde::Serialize for KType {
+        fn serialize<__S>(
+            &self,
+            __serializer: __S,
+        ) -> _serde::__private::Result<__S::Ok, __S::Error>
+        where
+            __S: _serde::Serializer,
+        {
+            match *self {
+                KType::Bool => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "KType",
+                        0u32,
+                        "Bool",
+                    )
+                }
+                KType::Map(ref __field0) => {
+                    _serde::Serializer::serialize_newtype_variant(
+                        __serializer,
+                        "KType",
+                        1u32,
+                        "Map",
+                        __field0,
+                    )
+                }
+                KType::Object(ref __field0) => {
+                    _serde::Serializer::serialize_newtype_variant(
+                        __serializer,
+                        "KType",
+                        2u32,
+                        "Object",
+                        __field0,
+                    )
+                }
+                KType::Number => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "KType",
+                        3u32,
+                        "Number",
+                    )
+                }
+                KType::String => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "KType",
+                        4u32,
+                        "String",
+                    )
+                }
+                KType::List(ref __field0) => {
+                    _serde::Serializer::serialize_newtype_variant(
+                        __serializer,
+                        "KType",
+                        5u32,
+                        "List",
+                        __field0,
+                    )
+                }
+                KType::None => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "KType",
+                        6u32,
+                        "None",
+                    )
+                }
+            }
+        }
+    }
+};
+pub enum _KType {
+    Bool,
+    Map(Box<_KType>),
+    Object(HashMap<String, _KType>),
+    Number,
+    String,
+    List(Box<_KType>),
+    None,
+}
+#[automatically_derived]
+impl ::core::clone::Clone for _KType {
+    #[inline]
+    fn clone(&self) -> _KType {
+        match self {
+            _KType::Bool => _KType::Bool,
+            _KType::Map(__self_0) => _KType::Map(::core::clone::Clone::clone(__self_0)),
+            _KType::Object(__self_0) => {
+                _KType::Object(::core::clone::Clone::clone(__self_0))
+            }
+            _KType::Number => _KType::Number,
+            _KType::String => _KType::String,
+            _KType::List(__self_0) => _KType::List(::core::clone::Clone::clone(__self_0)),
+            _KType::None => _KType::None,
+        }
+    }
+}
+#[automatically_derived]
+impl ::core::fmt::Debug for _KType {
+    #[inline]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        match self {
+            _KType::Bool => ::core::fmt::Formatter::write_str(f, "Bool"),
+            _KType::Map(__self_0) => {
+                ::core::fmt::Formatter::debug_tuple_field1_finish(f, "Map", &__self_0)
+            }
+            _KType::Object(__self_0) => {
+                ::core::fmt::Formatter::debug_tuple_field1_finish(f, "Object", &__self_0)
+            }
+            _KType::Number => ::core::fmt::Formatter::write_str(f, "Number"),
+            _KType::String => ::core::fmt::Formatter::write_str(f, "String"),
+            _KType::List(__self_0) => {
+                ::core::fmt::Formatter::debug_tuple_field1_finish(f, "List", &__self_0)
+            }
+            _KType::None => ::core::fmt::Formatter::write_str(f, "None"),
+        }
+    }
+}
+#[automatically_derived]
+impl ::core::marker::StructuralEq for _KType {}
+#[automatically_derived]
+impl ::core::cmp::Eq for _KType {
+    #[inline]
+    #[doc(hidden)]
+    #[coverage(off)]
+    fn assert_receiver_is_total_eq(&self) -> () {
+        let _: ::core::cmp::AssertParamIsEq<Box<_KType>>;
+        let _: ::core::cmp::AssertParamIsEq<HashMap<String, _KType>>;
+        let _: ::core::cmp::AssertParamIsEq<Box<_KType>>;
+    }
+}
+#[automatically_derived]
+impl ::core::marker::StructuralPartialEq for _KType {}
+#[automatically_derived]
+impl ::core::cmp::PartialEq for _KType {
+    #[inline]
+    fn eq(&self, other: &_KType) -> bool {
+        let __self_tag = ::core::intrinsics::discriminant_value(self);
+        let __arg1_tag = ::core::intrinsics::discriminant_value(other);
+        __self_tag == __arg1_tag
+            && match (self, other) {
+                (_KType::Map(__self_0), _KType::Map(__arg1_0)) => *__self_0 == *__arg1_0,
+                (_KType::Object(__self_0), _KType::Object(__arg1_0)) => {
+                    *__self_0 == *__arg1_0
+                }
+                (_KType::List(__self_0), _KType::List(__arg1_0)) => {
+                    *__self_0 == *__arg1_0
+                }
+                _ => true,
+            }
+    }
+}
+#[doc(hidden)]
+#[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+const _: () = {
+    #[allow(unused_extern_crates, clippy::useless_attribute)]
+    extern crate serde as _serde;
+    #[automatically_derived]
+    impl _serde::Serialize for _KType {
+        fn serialize<__S>(
+            &self,
+            __serializer: __S,
+        ) -> _serde::__private::Result<__S::Ok, __S::Error>
+        where
+            __S: _serde::Serializer,
+        {
+            match *self {
+                _KType::Bool => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "_KType",
+                        0u32,
+                        "Bool",
+                    )
+                }
+                _KType::Map(ref __field0) => {
+                    _serde::Serializer::serialize_newtype_variant(
+                        __serializer,
+                        "_KType",
+                        1u32,
+                        "Map",
+                        __field0,
+                    )
+                }
+                _KType::Object(ref __field0) => {
+                    _serde::Serializer::serialize_newtype_variant(
+                        __serializer,
+                        "_KType",
+                        2u32,
+                        "Object",
+                        __field0,
+                    )
+                }
+                _KType::Number => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "_KType",
+                        3u32,
+                        "Number",
+                    )
+                }
+                _KType::String => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "_KType",
+                        4u32,
+                        "String",
+                    )
+                }
+                _KType::List(ref __field0) => {
+                    _serde::Serializer::serialize_newtype_variant(
+                        __serializer,
+                        "_KType",
+                        5u32,
+                        "List",
+                        __field0,
+                    )
+                }
+                _KType::None => {
+                    _serde::Serializer::serialize_unit_variant(
+                        __serializer,
+                        "_KType",
+                        6u32,
+                        "None",
+                    )
+                }
+            }
+        }
+    }
+};
+#[doc(hidden)]
+#[allow(non_upper_case_globals, unused_attributes, unused_qualifications)]
+const _: () = {
+    #[allow(unused_extern_crates, clippy::useless_attribute)]
+    extern crate serde as _serde;
+    #[automatically_derived]
+    impl<'de> _serde::Deserialize<'de> for _KType {
+        fn deserialize<__D>(
+            __deserializer: __D,
+        ) -> _serde::__private::Result<Self, __D::Error>
+        where
+            __D: _serde::Deserializer<'de>,
+        {
+            #[allow(non_camel_case_types)]
+            #[doc(hidden)]
+            enum __Field {
+                __field0,
+                __field1,
+                __field2,
+                __field3,
+                __field4,
+                __field5,
+                __field6,
+            }
+            #[doc(hidden)]
+            struct __FieldVisitor;
+            impl<'de> _serde::de::Visitor<'de> for __FieldVisitor {
+                type Value = __Field;
+                fn expecting(
+                    &self,
+                    __formatter: &mut _serde::__private::Formatter,
+                ) -> _serde::__private::fmt::Result {
+                    _serde::__private::Formatter::write_str(
+                        __formatter,
+                        "variant identifier",
+                    )
+                }
+                fn visit_u64<__E>(
+                    self,
+                    __value: u64,
+                ) -> _serde::__private::Result<Self::Value, __E>
+                where
+                    __E: _serde::de::Error,
+                {
+                    match __value {
+                        0u64 => _serde::__private::Ok(__Field::__field0),
+                        1u64 => _serde::__private::Ok(__Field::__field1),
+                        2u64 => _serde::__private::Ok(__Field::__field2),
+                        3u64 => _serde::__private::Ok(__Field::__field3),
+                        4u64 => _serde::__private::Ok(__Field::__field4),
+                        5u64 => _serde::__private::Ok(__Field::__field5),
+                        6u64 => _serde::__private::Ok(__Field::__field6),
+                        _ => {
+                            _serde::__private::Err(
+                                _serde::de::Error::invalid_value(
+                                    _serde::de::Unexpected::Unsigned(__value),
+                                    &"variant index 0 <= i < 7",
+                                ),
+                            )
+                        }
+                    }
+                }
+                fn visit_str<__E>(
+                    self,
+                    __value: &str,
+                ) -> _serde::__private::Result<Self::Value, __E>
+                where
+                    __E: _serde::de::Error,
+                {
+                    match __value {
+                        "Bool" => _serde::__private::Ok(__Field::__field0),
+                        "Map" => _serde::__private::Ok(__Field::__field1),
+                        "Object" => _serde::__private::Ok(__Field::__field2),
+                        "Number" => _serde::__private::Ok(__Field::__field3),
+                        "String" => _serde::__private::Ok(__Field::__field4),
+                        "List" => _serde::__private::Ok(__Field::__field5),
+                        "None" => _serde::__private::Ok(__Field::__field6),
+                        _ => {
+                            _serde::__private::Err(
+                                _serde::de::Error::unknown_variant(__value, VARIANTS),
+                            )
+                        }
+                    }
+                }
+                fn visit_bytes<__E>(
+                    self,
+                    __value: &[u8],
+                ) -> _serde::__private::Result<Self::Value, __E>
+                where
+                    __E: _serde::de::Error,
+                {
+                    match __value {
+                        b"Bool" => _serde::__private::Ok(__Field::__field0),
+                        b"Map" => _serde::__private::Ok(__Field::__field1),
+                        b"Object" => _serde::__private::Ok(__Field::__field2),
+                        b"Number" => _serde::__private::Ok(__Field::__field3),
+                        b"String" => _serde::__private::Ok(__Field::__field4),
+                        b"List" => _serde::__private::Ok(__Field::__field5),
+                        b"None" => _serde::__private::Ok(__Field::__field6),
+                        _ => {
+                            let __value = &_serde::__private::from_utf8_lossy(__value);
+                            _serde::__private::Err(
+                                _serde::de::Error::unknown_variant(__value, VARIANTS),
+                            )
+                        }
+                    }
+                }
+            }
+            impl<'de> _serde::Deserialize<'de> for __Field {
+                #[inline]
+                fn deserialize<__D>(
+                    __deserializer: __D,
+                ) -> _serde::__private::Result<Self, __D::Error>
+                where
+                    __D: _serde::Deserializer<'de>,
+                {
+                    _serde::Deserializer::deserialize_identifier(
+                        __deserializer,
+                        __FieldVisitor,
+                    )
+                }
+            }
+            #[doc(hidden)]
+            struct __Visitor<'de> {
+                marker: _serde::__private::PhantomData<_KType>,
+                lifetime: _serde::__private::PhantomData<&'de ()>,
+            }
+            impl<'de> _serde::de::Visitor<'de> for __Visitor<'de> {
+                type Value = _KType;
+                fn expecting(
+                    &self,
+                    __formatter: &mut _serde::__private::Formatter,
+                ) -> _serde::__private::fmt::Result {
+                    _serde::__private::Formatter::write_str(__formatter, "enum _KType")
+                }
+                fn visit_enum<__A>(
+                    self,
+                    __data: __A,
+                ) -> _serde::__private::Result<Self::Value, __A::Error>
+                where
+                    __A: _serde::de::EnumAccess<'de>,
+                {
+                    match _serde::de::EnumAccess::variant(__data)? {
+                        (__Field::__field0, __variant) => {
+                            _serde::de::VariantAccess::unit_variant(__variant)?;
+                            _serde::__private::Ok(_KType::Bool)
+                        }
+                        (__Field::__field1, __variant) => {
+                            _serde::__private::Result::map(
+                                _serde::de::VariantAccess::newtype_variant::<
+                                    Box<_KType>,
+                                >(__variant),
+                                _KType::Map,
+                            )
+                        }
+                        (__Field::__field2, __variant) => {
+                            _serde::__private::Result::map(
+                                _serde::de::VariantAccess::newtype_variant::<
+                                    HashMap<String, _KType>,
+                                >(__variant),
+                                _KType::Object,
+                            )
+                        }
+                        (__Field::__field3, __variant) => {
+                            _serde::de::VariantAccess::unit_variant(__variant)?;
+                            _serde::__private::Ok(_KType::Number)
+                        }
+                        (__Field::__field4, __variant) => {
+                            _serde::de::VariantAccess::unit_variant(__variant)?;
+                            _serde::__private::Ok(_KType::String)
+                        }
+                        (__Field::__field5, __variant) => {
+                            _serde::__private::Result::map(
+                                _serde::de::VariantAccess::newtype_variant::<
+                                    Box<_KType>,
+                                >(__variant),
+                                _KType::List,
+                            )
+                        }
+                        (__Field::__field6, __variant) => {
+                            _serde::de::VariantAccess::unit_variant(__variant)?;
+                            _serde::__private::Ok(_KType::None)
+                        }
+                    }
+                }
+            }
+            #[doc(hidden)]
+            const VARIANTS: &'static [&'static str] = &[
+                "Bool",
+                "Map",
+                "Object",
+                "Number",
+                "String",
+                "List",
+                "None",
+            ];
+            _serde::Deserializer::deserialize_enum(
+                __deserializer,
+                "_KType",
+                VARIANTS,
+                __Visitor {
+                    marker: _serde::__private::PhantomData::<_KType>,
+                    lifetime: _serde::__private::PhantomData,
+                },
+            )
+        }
+    }
+};
+impl From<KType> for _KType {
+    fn from(value: KType) -> Self {
+        match value {
+            KType::Bool => _KType::Bool,
+            KType::Map(b) => _KType::Map(Box::new((*b).into())),
+            KType::Object(m) => {
+                _KType::Object(
+                    m.iter().map(|(s, t)| (s.to_string(), t.clone().into())).collect(),
+                )
+            }
+            KType::Number => _KType::Number,
+            KType::String => _KType::String,
+            KType::List(l) => _KType::List(Box::new((*l).into())),
+            KType::None => _KType::None,
+        }
+    }
+}

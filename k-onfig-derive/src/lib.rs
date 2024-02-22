@@ -19,7 +19,7 @@ pub fn konfig(item: TokenStream) -> TokenStream {
                     let name = n.ident.clone().unwrap();
                     let ty = n.ty.clone();
                     quote! {
-                        map.insert(stringify!(#name),<#ty as ::k_onfig::konfig::Konfig>::konfig());
+                        __map.insert(stringify!(#name),<#ty as ::k_onfig::konfig::Konfig>::konfig());
                     }
                 })
                 .collect()
@@ -29,15 +29,19 @@ pub fn konfig(item: TokenStream) -> TokenStream {
         }
     };
     quote! {
-        impl ::k_onfig::konfig::Konfig for #s_ident {
-            fn konfig() -> ::k_onfig::KType {
-                let mut map: ::std::collections::BTreeMap<&'static str, ::k_onfig::KType> = ::std::collections::BTreeMap::new();
+        const _:() = {
+            extern crate k_onfig as _k;
+            #[automatically_derived]
+            impl _k::konfig::Konfig for #s_ident {
+                fn konfig() -> _k::KType {
+                    let mut __map: ::std::collections::BTreeMap<&'static str, _k::KType> = ::std::collections::BTreeMap::new();
 
-                #(#exps)*
+                    #(#exps)*
 
-                ::k_onfig::KType::Object(map)
+                    _k::KType::Object(__map)
+                }
             }
-        }
+        };
     }
     .into()
 }

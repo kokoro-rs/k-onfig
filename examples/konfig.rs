@@ -13,7 +13,6 @@ struct Test {
     map: HashMap<String, Vec<Hello>>,
     number: i32,
 }
-
 fn main() {
     let konfig = Test::konfig();
     let config = Test::konfig();
