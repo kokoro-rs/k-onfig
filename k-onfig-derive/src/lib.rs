@@ -1,7 +1,7 @@
 use proc_macro::TokenStream;
-use proc_macro2::{TokenStream as TokenStream2};
+use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
-use syn::{parse_macro_input, DataStruct, DeriveInput, Fields, Type};
+use syn::{parse_macro_input, DataStruct, DeriveInput, Fields};
 
 #[proc_macro_derive(Konfig)]
 pub fn konfig(item: TokenStream) -> TokenStream {
@@ -19,7 +19,7 @@ pub fn konfig(item: TokenStream) -> TokenStream {
                     let name = n.ident.clone().unwrap();
                     let ty = n.ty.clone();
                     quote! {
-                        map.insert(stringify!(#name),#ty::konfig());
+                        map.insert(stringify!(#name),<#ty as ::k_onfig::konfig::Konfig>::konfig());
                     }
                 })
                 .collect()
@@ -41,4 +41,3 @@ pub fn konfig(item: TokenStream) -> TokenStream {
     }
     .into()
 }
-

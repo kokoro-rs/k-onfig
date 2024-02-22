@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+use std::collections::{HashMap, HashSet};
+
 use k_onfig::Konfig;
 #[derive(Konfig)]
 struct Hello {
@@ -6,10 +8,15 @@ struct Hello {
 }
 #[derive(Konfig)]
 struct Test {
-    hello: Vec::<Hello>,
-    //hello: Vec<Hello>,
+    hello: Vec<Hello>,
+    set: HashSet<Hello>,
+    map: HashMap<String, Vec<Hello>>,
+    number: i32,
 }
 
 fn main() {
-    println!("{:#?}", Test::konfig());
+    let konfig = Test::konfig();
+    let config = Test::konfig();
+    assert_eq!(konfig, config);
+    println!("{:#?}", konfig);
 }

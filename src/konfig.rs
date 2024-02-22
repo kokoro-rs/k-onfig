@@ -2,8 +2,8 @@ use std::collections::BTreeMap;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
-pub use k_onfig_derive::Konfig;
 use crate::KType;
+pub use k_onfig_derive::Konfig;
 pub trait Konfig {
     fn konfig() -> KType;
 }
@@ -38,7 +38,7 @@ macro_rules! konfig_string {
     };
 }
 konfig_string!(String);
-konfig_string!(&str);
+konfig_string!(str);
 
 macro_rules! konfig_list {
     ($type:ident) => {
@@ -54,9 +54,9 @@ konfig_list!(HashSet);
 
 macro_rules! konfig_map {
     ($type:ident) => {
-        impl<V, K> Konfig for $type<K, V> {
+        impl<V: Konfig, K> Konfig for $type<K, V> {
             fn konfig() -> KType {
-                KType::Map
+                KType::Map(Box::new(V::konfig()))
             }
         }
     };
