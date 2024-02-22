@@ -1,12 +1,14 @@
 workspace = { members = ["k-onfig-derive"] }
 [package]
 name = "k-onfig"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 serde = {version = "1.0.197", features = ["derive"]}
 [dependencies.k-onfig-derive]
 path = "./k-onfig-derive"
+version = "0.0.1"
+license = "MIT"
+description = "For Config Schema"
+repository = "https://github.com/kokoro-rs/k-onfig"
