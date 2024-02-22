@@ -1,7 +1,10 @@
 [package]
 name = "k-onfig-derive"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
+license = "MIT"
+description = "For Config Schema"
+repository = "https://github.com/kokoro-rs/k-onfig"
 
 [dependencies]
 proc-macro2 = "1.0.78"
