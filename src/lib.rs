@@ -1,14 +1,14 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+pub mod konfig;
+pub use konfig::*;
+use std::collections::BTreeMap;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+#[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+pub enum KType {
+    Bool,
+    Map,
+    Object(BTreeMap<&'static str, KType>),
+    Number,
+    String,
+    List(Box<KType>),
+    None,
 }

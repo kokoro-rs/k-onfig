@@ -21,8 +21,18 @@ dependencies = [
 name = "k-onfig"
 version = "0.1.0"
 dependencies = [
+ "k-onfig-derive",
  "ron",
  "serde",
+]
+
+[[package]]
+name = "k-onfig-derive"
+version = "0.1.0"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
 ]
 
 [[package]]
